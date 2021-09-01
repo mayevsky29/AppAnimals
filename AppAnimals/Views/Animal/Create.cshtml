@@ -1,0 +1,81 @@
+﻿@model AppAnimals.Models.AnimalCreateViewModel
+
+@{
+    ViewData["Title"] = "Додати тварину";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<hr />
+<div class="row">
+    <div class="offset-md-3 col-md-6">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BirthDay" class="control-label"></label>
+                <input asp-for="BirthDay" class="form-control" />
+                <span asp-validation-for="BirthDay" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                @*<input asp-for="Image" class="form-control" />*@
+
+                <div class="input-group mb-3">
+                    <input asp-for="Image" type="file" class="form-control">
+                    <label class="input-group-text" for="Image">Upload</label>
+                </div>
+
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Створити" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+@section Styles {
+    <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+}
+
+
+@section Scripts {
+    <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/lib/bootstrap-datepicker/locales/bootstrap-datepicker.uk.min.js"></script>
+    <script>
+
+        $(function () {
+            //Отоимуємо поточну дату
+            var dateObj = new Date();
+            var month = @DateTime.Now.Month;
+            var day = @DateTime.Now.Day; //торимали день
+            var year =@(DateTime.Now.Year - 1); //від поточного року відняли 18
+
+            //ініціалізуємо календар для інпута txtDateBirth по id
+            $('#BirthDay').datepicker({
+                format: "dd.mm.yyyy",      //формат дати
+                language: 'uk',             //локалізація
+                startDate: "01.01.1990",    //початкова дата
+                endDate: `${day}.${month}.${year}` //вказую кінцеву дату для дата пікара
+            });
+        });
+    </script>
+
+    @*@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
+}

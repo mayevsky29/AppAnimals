@@ -1,0 +1,44 @@
+﻿@model IEnumerable<AnimalsViewModel>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Назва</th>
+            <th scope="col">Дата народження</th>
+            <th scope="col">Фото</th>
+            <th scope="col"></th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@item.Id</th>
+                <td>@item.Name</td>
+                <td>@item.BirthDay</td>
+                <td>
+                    <img src="/images/@item.Image"
+                         width="150"
+                         alt="img" />
+                </td>
+                <td class="align-middle text-left"
+                    style="font-size: 30px">
+
+                    @*Delete*@
+                    <a href="#" class="text-danger text-decoration-none"
+                       data-delete-animal data-id="@item.Id">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </a>
+                    @*Edit*@
+                    <a asp-action="Edit" asp-controller="Animal" asp-route-id="@item.Id"
+                      class="fa fa-pencil-square-o text-info text-decoration-none cursor-pointer">
+                    </a>
+                </td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>

@@ -1,0 +1,83 @@
+﻿@model HomeIndexModel
+
+@*функція для виведення кількісті сторінок та перехід по них*@
+@{
+    int startCount = Model.Page - 2 > 1 ? Model.Page - 2 : 1;
+    int endCount = Model.Page + 2 <= Model.PageCount ? Model.Page + 2 : Model.PageCount;
+    if (startCount == 1)
+    {
+        endCount += -(Model.Page - 4);
+    }
+    if (Model.Page + 2 >= Model.PageCount)
+    {
+        startCount -= (Model.Page + 2 - Model.PageCount);
+    }
+    startCount = startCount < 1 ? 1 : startCount;
+    endCount = endCount >= Model.PageCount ? Model.PageCount : endCount;
+    int counter = startCount;
+
+}
+<div class="container">
+    <ul class="mx-auto pagination justify-content-center">
+        @*Перехід по одній сторінці назад*@
+        <li class="page-item">
+            <a asp-controller="Animal"
+               asp-action="Index" asp-route-name="@Model.Search.Name"
+               asp-route-page="@(Model.Page - 1 > 1 ? Model.Page - 1 : 1)" class="page-link">&laquo;</a>
+        </li>
+
+        @*Пропуск на перших сторінках*@
+        @for (int i = startCount; i <= Model.Page; i++)
+        {
+            string active = "";
+            int num = i;
+            if (i == Model.Page)
+                active = "active";
+
+            string content = "";
+
+            if (startCount > 1 && counter == startCount)
+            {
+                content = 1.ToString();
+                num = 1;
+            }
+            if (startCount > 1 && counter == startCount + 1)
+                content = "...";
+            else content = num.ToString();
+            counter++;
+            <li class="page-item @active">
+                <a class="page-link" asp-controller="Animal" asp-action="Index"
+                   asp-route-name="@Model.Search.Name" asp-route-page="@num">@content</a>
+            </li>
+        }
+        @*Пропуск перед останніми сторінками*@
+        @for (int i = Model.Page + 1; i <= endCount; i++)
+        {
+            string content = "";
+            int num = i;
+            if (endCount < Model.PageCount && counter == endCount)
+                num = Model.PageCount;
+
+            if (endCount < Model.PageCount && counter == endCount - 1)
+                content = "...";
+            else content = num.ToString();
+
+
+            counter++;
+            <li class="page-item">
+                <a class="page-link" asp-controller="Animal" asp-action="Index"
+                   asp-route-name="@Model.Search.Name" asp-route-page="@num">@content</a>
+            </li>
+        }
+
+        @*Перехід по одній сторінці вперед*@
+        <li class="page-item">
+            <a asp-controller="Animal"
+               asp-action="Index" asp-route-name="@Model.Search.Name"
+               asp-route-page="@(Model.Page+1 < Model.PageCount ? Model.Page+1 : Model.PageCount)" class="page-link">&raquo;</a>
+        </li>
+    </ul>
+</div>
+
+
+

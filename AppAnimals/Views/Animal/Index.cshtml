@@ -1,0 +1,103 @@
+﻿@model HomeIndexModel
+@{
+    ViewData["Title"] = "Тварини";
+}
+@section Styles {
+    <style>
+        .modal-body {
+            background-color: #7cebc4;
+        }
+
+        .lds-hourglass {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+
+            .lds-hourglass:after {
+                content: " ";
+                display: block;
+                border-radius: 50%;
+                width: 0;
+                height: 0;
+                margin: 8px;
+                box-sizing: border-box;
+                border: 32px solid #fff;
+                border-color: #fff transparent #fff transparent;
+                animation: lds-hourglass 1.2s infinite;
+            }
+
+        @@keyframes lds-hourglass {
+            0% {
+                transform: rotate(0);
+                animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+            }
+
+            50% {
+                transform: rotate(900deg);
+                animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+            }
+
+            100% {
+                transform: rotate(1800deg);
+            }
+        }
+    </style>
+}
+<h1>Список тварин</h1>
+
+@await Html.PartialAsync("_Search", Model.Search)
+
+<a asp-action="Create" class="btn btn-success">Додати</a>
+
+@*Передаємо дані на іншу сторінку, яка є частичною вюшкою,
+    Дана вюшка має бути у поточній папці, або у папці Shared*@
+@await Html.PartialAsync("_List", Model.Animals)
+
+@await Html.PartialAsync("_Pagination", Model)
+
+
+<div class="modal" tabindex="-1" id="modalDelete">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Видалення</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Ви дійсно бажаєте видалити запис?</p>
+                <div class="lds-hourglass"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
+                <button type="button" class="btn btn-primary" id="btnDeleteAnimal">Видалити</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/axios/axios.min.js"></script>
+    <script>
+        $(function () {
+            var deleteItem;
+            $("[data-delete-animal]").on("click", function (e) {
+                deleteItem = $(this).closest('a'); //елемент, який я видаляю
+                e.preventDefault();
+                $("#modalDelete").modal("show");
+                console.log(deleteItem.attr("data-id"));
+            });
+
+            $("#btnDeleteAnimal").on("click", function () {
+                var url = `/animal/delete/${deleteItem.attr("data-id")}`;
+                axios.post(url)
+                    .then(function (result) {
+                        deleteItem.closest("tr").remove();
+                        $("#modalDelete").modal("hide");
+                        //console.log(result);
+                    });
+            });
+        });
+    </script>
+} 
