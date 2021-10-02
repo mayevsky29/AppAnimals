@@ -1,6 +1,7 @@
 ﻿using AppAnimals.Domain;
 using AppAnimals.Domain.Entities.Catalog;
 using AppAnimals.Models;
+using AppAnimals.Resources;
 using AutoMapper;
 using Bogus;
 using Microsoft.AspNetCore.Http;
@@ -56,6 +57,13 @@ namespace AppAnimals.Controllers
 
         public IActionResult Index(SearchHomeIndexModel search, int page = 1)
         {
+            // Виводить в консолі, яку культуру підтримує ОП
+            //Console.WriteLine(Thread.CurrentThread.CurrentCulture);
+            //Console.WriteLine(Thread.CurrentThread.CurrentUICulture);
+
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en");
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en");
+            ViewBag.Email = Strings.Email;
             int itemsCount = 5;
 
             var query = _context.Animals.AsQueryable();

@@ -84,9 +84,19 @@ namespace AppAnimals
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapAreaControllerRoute(
+                    name: "admin",
+                    areaName: "admin",
+                    pattern: "admin/{controller=Dashboards}/{action=Dashboard_1}/{id?}");
+
+                // додавання в адресному рядку мови перед контролером
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{lang=uk}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

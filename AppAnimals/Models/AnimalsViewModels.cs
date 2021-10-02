@@ -30,6 +30,7 @@ namespace AppAnimals.Models
         public decimal Price { get; set; }
     }
 
+    
     public class AnimalCreateValidator : AbstractValidator<AnimalCreateViewModel>
     {
         public AnimalCreateValidator()
