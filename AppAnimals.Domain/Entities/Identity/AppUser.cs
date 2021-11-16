@@ -10,5 +10,7 @@ namespace AppAnimals.Domain.Entities.Identity
     public class AppUser : IdentityUser<long>
     {
         public virtual ICollection<AppUserRole> UserRoles { get; set; }
+        public string Name { get; set; }
+        public string Image { get; set; }
     }
 }

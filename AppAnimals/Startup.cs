@@ -47,6 +47,7 @@ namespace AppAnimals
                .AddDefaultTokenProviders();
 
             services.AddControllersWithViews()
+                .AddViewLocalization()
                 .AddFluentValidation();
             services.AddTransient<IValidator<AnimalCreateViewModel>, AnimalCreateValidator>();
 
@@ -95,7 +96,7 @@ namespace AppAnimals
 
                 // додавання в адресному рядку мови перед контролером
                 endpoints.MapControllerRoute(
-                    name: "default",
+                    name: "defaultlocal",
                     pattern: "{lang=uk}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",

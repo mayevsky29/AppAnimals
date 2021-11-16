@@ -1,0 +1,16 @@
+﻿@using AppAnimals.Domain.Entities.Identity
+@model List<AppUser>
+@{int counter = 1;}
+
+@foreach (var user in Model)
+{
+    <tr class="draganddrop">
+        <td scope="row">@(counter++)</td>
+        <td>@user.Name</td>
+        <td class="EmailTag">@user.Email</td>
+        <td>
+            <img src="/images/@user.Image" width="60" height="60" alt="No image" />
+        </td>
+    </tr>
+}
+

@@ -1,87 +1,34 @@
-﻿@using AppAnimals.Areas.Admin.Helpers 
+﻿@using AppAnimals.Areas.Admin.Helpers
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - .NET Core 2.1</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-    <!-- Add local styles, mostly for plugins css file -->
-    @if (IsSectionDefined("Styles"))
-            {@RenderSection("Styles", required: false)}
-
-    <environment names="Development">
-        <link rel="stylesheet" href="~/template/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/template/lib/font-awesome/css/font-awesome.css" />
-        <link rel="stylesheet" href="~/template/css/animate.css" />
-        <link rel="stylesheet" href="~/template/css/style.css" asp-append-version="true" />
-    </environment>
-    <environment names="Staging,Production">
-        <link rel="stylesheet" href="~/template/lib/bootstrap/dist/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="~/template/lib/font-awesome/css/font-awesome.min.css" />
-        <link rel="stylesheet" href="~/template/css/animate.css" />
-        <link rel="stylesheet" href="~/template/css/style.css" asp-append-version="true" />
-    </environment>
-
-
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/template/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/template/css/animate.css" />
+    <link rel="stylesheet" href="~/template/css/style.css" asp-append-version="true" />
+    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
-
-    <!-- Skin configuration box -->
-    <!-- <partial name="_SkinConfig" /> -->
-
-    <!-- Wrapper-->
     <div id="wrapper" class="@Html.PageClass()">
 
-        @Html.Partial("_Navigation")
-        <!-- Navigation -->
-        @*<partial name="_Navigation" />*@
+        @await Html.PartialAsync("_Navigation")
 
-        <!-- Page wraper -->
         <div id="page-wrapper" class="gray-bg @ViewBag.SpecialClass">
-
-            <!-- Top Navbar -->
-            @*<partial name="_TopNavbar" />*@
-            @Html.Partial("_TopNavbar")
+            
 
             <!-- Main view  -->
             @RenderBody()
-
-            <!-- Footer -->
-            @Html.Partial("_Footer")
-            @*<partial name="_Footer" />*@
-
+            
         </div>
-        <!-- End page wrapper-->
-        <!-- Right Sidebar -->
-        <partial name="_RightSidebar" />
-
     </div>
-    <!-- End wrapper-->
 
-    <environment names="Development">
-        <script src="~/template/lib/jquery/dist/jquery.js"></script>
-        <script src="~/template/lib/Popper/popper.min.js"></script>
-        <script src="~/template/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/template/lib/metisMenu/dist/jquery.metisMenu.js"></script>
-        <script src="~/template/lib/slimScroll/jquery.slimscroll.js"></script>
-        <script src="~/template/lib/pace/pace.js"></script>
-        <script src="~/template/js/script.js" asp-append-version="true"></script>
-
-        <!-- Only for demo purpose -->
-        <script src="~/template/js/skin.config.js"></script>
-    </environment>
-    <environment names="Staging,Production">
-        <script src="~/template/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/template/lib/Popper/popper.min.js"></script>
-        <script src="~/template/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="~/template/lib/metisMenu/dist/jquery.metisMenu.js"></script>
-        <script src="~/template/lib/pace/pace.min.js"></script>
-        <script src="~/template/lib/slimScroll/jquery.slimscroll.min.js"></script>
-        <script src="~/template/js/script.js" asp-append-version="true"></script>
-    </environment>
-
+    <script src="~/template/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/template/lib/Popper/popper.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/template/lib/metisMenu/dist/jquery.metisMenu.js"></script>
+    <script src="~/template/lib/pace/pace.min.js"></script>
+    <script src="~/template/lib/slimScroll/jquery.slimscroll.min.js"></script>
+    <script src="~/template/js/script.js" asp-append-version="true"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

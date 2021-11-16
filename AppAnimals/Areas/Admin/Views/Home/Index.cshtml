@@ -1,1 +1,344 @@
-﻿<h1>Hello</h1>
+﻿@using AppAnimals.Constants
+@using AppAnimals.Areas.Admin.Models
+
+@model UserViewModel
+@{
+    ViewData["Title"] = "Dashboard v.1";
+}
+
+@{
+    string adduser = "";
+    string edituser = "";
+    string editimage = "";
+    switch (Model.FormName)
+    {
+        case "adduser":
+            {
+                adduser = "show active";
+                break;
+            }
+        case "edituser":
+            {
+                edituser = "show active";
+                break;
+            }
+        case "editimage": 
+            {
+                editimage = "show active";
+                break;
+            }
+    }
+
+            }
+<div class="tab-content mt-5">
+    <div class="tab-pane fade @adduser" id="adduser">
+        <div class="container">
+            <h2 class="text-center">Додати користувача</h2>
+            <div class="container">
+                <div class="offset-3 col-6">
+                    <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="Create"
+                          asp-area="Admin">
+                        @await Html.PartialAsync("_AddUserForm", Model.CreateUser)
+
+                        <div class="d-flex align-items-end flex-column">
+                            <div class="form-group mt-2 me-2">
+                                <input type="submit" value="Створити" class="btn btn-success px-5" />
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade show @edituser" id="edituser">
+        <h2 class="text-center">Редагувати користувача</h2>
+        <div class="container">
+            <div class="offset-3 col-6">
+                <form method="post" enctype="multipart/form-data" id="mainForm" asp-controller="Home" asp-action="Update"
+                      asp-area="Admin">
+
+
+                    <select id="EmailOld" name="EmailOld">
+                        <option>Оберіть користувача</option>
+                        @foreach (var element in Model.context.Users.ToList())
+            {
+                            <option>@element.UserName</option>
+                        }
+                    </select>
+                    @await Html.PartialAsync("_AddUserForm", Model.EditUser)
+
+                    <div class="d-flex align-items-end flex-column">
+                        <div class="form-group mt-2 me-2">
+                            <input type="submit" value="Змінити" class="btn btn-success px-5" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="deleteuser">
+        <div class="container">
+            <div class="offset-3 col-6">
+                @using (Html.BeginForm("Delete", "Home", new { area = "Admin" }))
+                {
+                    <div class="form-group">
+                        <label for="options">Оберіть користувача</label>
+                        <select id="options" name="options" multiple>
+                            <option disabled>Оберіть користувача</option>
+                            @foreach (var element in Model.context.Users.ToList())
+        {
+                                <option>@element.UserName</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <input class="btn btn-success px-3 mt-2" type="submit" value="Видалити" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div id="editrole" class="tab-pane fade">
+        <div class="container">
+            <div class="offset-3 col-6">
+                @using (Html.BeginForm("EditRole", "Home", new { area = "Admin" }))
+                {
+                    <div class="form-group">
+                        <label for="optionsRole">Оберіть користувача</label>
+                        <select id="optionsRole" name="optionsRole" multiple>
+                            <option disabled>Оберіть користувача</option>
+                            @foreach (var element in Model.context.Users.ToList())
+                            {
+                                <option>@element.UserName</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <input type="radio" class="form-check-input" name="rbedit" id="isAdmin" />
+                        <label class="form-check-label" for="isAdmin">Адміністратор</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" name="rbedit" id="isVip" />
+                        <label class="form-check-label" for="isVip">Особливий користувач</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" name="rbedit" id="isUser" />
+                        <label class="form-check-label" for="isUser">Користувач</label>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div id="editimage" class="tab-pane fade @editimage">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Номер</th>
+                    <th scope="col">Ім'я</th>
+                    <th scope="col">Електронна пошта</th>
+                    <th scope="col">Зображення</th>
+                </tr>
+            </thead>
+            <tbody>
+                @await Component.InvokeAsync("User")
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="d-none">
+@using (Html.BeginForm("ChangeImage", "Home", new { area = "Admin"}, FormMethod.Post))
+{
+        @await Html.PartialAsync("_FormImgEdit", new ChangeImageModel())
+}
+</div>
+
+
+@section Scripts {
+
+
+    <script src="~/template/lib/flot/jquery.flot.js"></script>
+    <script src="~/template/lib/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="~/template/lib/flot/jquery.flot.resize.js"></script>
+    <script src="~/template/lib/flot/jquery.flot.pie.js"></script>
+    <script src="~/template/lib/flot/jquery.flot.time.js"></script>
+    <script src="~/template/lib/flot/jquery.flot.spline.js"></script>
+    <script src="~/template/lib/sparkline/jquery.sparkline.min.js"></script>
+    <script src="~/template/lib/chartJs/Chart.min.js"></script>
+    <script src="~/template/lib/peity/jquery.peity.js"></script>
+    <script src="~/lib/axios/axios.min.js"></script>
+    <script src="~/lib/select2/js/select2.min.js"></script>
+    <script src="~/lib/select2/js/i18n/uk.min.js"></script>
+    <script>
+        $(function () {
+            $("#EmailOld").select2({ width: '100px' });
+            $("#EmailOld").on("change", function () {
+                axios.get(`/admin/home/getdata/?email=${$("#EmailOld").val()}`)
+                    .then(result => {
+                         var data = JSON.parse(JSON.stringify(result))["data"];
+
+                        $("[data-edit-name]").val(data["Name"]);
+                        $("[data-edit-email]").val(data["Email"]);
+                     });
+            });
+
+            $("[data-bs-target]").on("click", function () {
+                $(".field-validation-error").each(function (index) {
+                    $(".field-validation-error")[index].innerHTML = "";
+                });
+
+                var $arr = $(".validation-summary-errors ul li")
+                $arr.each(function (index) {
+                    $arr[index].remove();
+                });
+            });
+
+
+            $("#options").select2({
+                maximumSelectionLength: 5
+            });
+
+            $("#optionsRole").select2({
+                maximumSelectionLength : 1
+            });
+
+            $("#optionsRole").on("change", function (e) {
+                var $selectItem = $(e.target);
+                if ($selectItem.val() != "")
+                {
+                    axios.get(`/Admin/Home/GetUserRole?email=${$selectItem.val()}`)
+                    .then(result => {
+                     var data = JSON.parse(JSON.stringify(result));
+                     var strData = data["data"];
+
+                     document.getElementById('isAdmin').checked = false;
+                     document.getElementById('isUser').checked = false;
+                     document.getElementById('isVip').checked = false;
+
+                     switch (strData)
+                     {
+                         case "@Roles.Admin" :
+                             {
+                                 document.getElementById('isAdmin').checked = true;
+                                 break;
+                                 }
+                            case "@Roles.User" :
+                             {
+                                 document.getElementById('isUser').checked = true;
+                                 break;
+                                 }
+                            case "@Roles.Vip" :
+                             {
+                                 document.getElementById('isVip').checked = true;
+                                 break;
+                                 }
+                             }
+                     });
+                }
+            });
+
+            $("[name='rbedit']").on("change", function (e) {
+                if (e.target.checked)
+                {
+                        var $selectEdit = $("#optionsRole");
+                        if ($selectEdit.val() != "")
+                    {
+                            var $rb = $(e.target);
+                            axios.get(`/Admin/Home/EditRole?email=${$selectEdit.val()}&role=${$rb.attr("id")}`);
+                        }
+                    }
+                    });
+        });
+    </script>
+
+    <script>
+        $(function () {
+            var $draganddrop = $(".draganddrop");
+
+            $draganddrop.each(function (index) {
+                $($draganddrop[index]).on("dragenter", function (e) {
+                    e.preventDefault();
+                    var $tr = $(e.target).closest("tr");
+                    $tr.addClass("border");
+                    $tr.addClass("border-3");
+                });
+
+                $($draganddrop[index]).on("dragover", function (e) {
+                    e.preventDefault();
+                    var $tr = $(e.target).closest("tr");
+                    $tr.addClass("border");
+                    $tr.addClass("border-3");
+                });
+
+                $($draganddrop[index]).on("dragleave", function (e) {
+                    e.preventDefault();
+                    var $tr = $(e.target).closest("tr");
+                    $tr.removeClass("border");
+                    $tr.removeClass("border-3");
+                });
+
+                $draganddrop[index].addEventListener("drop", function (e) {
+                    e.preventDefault();
+
+                    var $element = $(e.target);
+
+                    var files;
+                    console.log(e.files);
+                    if (e.files) {
+                        files = e.files;
+                    } else if (e.dataTransfer) {
+                        files = e.dataTransfer.files;
+                    }
+
+                    var file = files[0];
+
+
+                    if (file) {
+                        console.log(file);
+                        if (file.type.match(/^image\//)) {
+                            var fileReader = new FileReader();
+
+                            fileReader.onload = function () {
+                                console.log(fileReader.result);
+                                var result = fileReader.result;
+                                var $trEl = $element.closest("tr");
+                                var $emailTag = $trEl.find('.EmailTag');
+                                var $imgTag = $trEl.find('img');
+                                $imgTag.attr("src", result);
+
+                                $("#img").val($imgTag.attr("src"));
+                                $("#email").val($emailTag.html());
+
+                                var $form = $("#img").closest('form');
+                                $form.on("submit", function (e) {
+                                    e.stopPropagation();
+                                });
+                                
+                                $("#btnSubmit").click();
+
+                                //var obj = {
+                                //    "email": $emailTag.html(),
+                                //    "img": $imgTag.attr("src")
+                                //};
+                                //console.log(JSON.stringify(obj));
+
+
+
+                            };
+
+                            fileReader.readAsDataURL(file);
+                        }
+                    }
+
+
+                    var $tr = $(e.target).closest("tr");
+                    $tr.removeClass("border");
+                    $tr.removeClass("border-3");
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,28 @@
+﻿@using AppAnimals.Areas.Admin.Models
+@model BaseViewModel
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group mt-3">
+                    <label asp-for="Name"></label>
+                    <input class="form-control" asp-for="Name" data-edit-name/>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <label asp-for="Email"></label>
+                    <input class="form-control" asp-for="Email" data-edit-email/>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <label asp-for="Password"></label>
+                    <input class="form-control" asp-for="Password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="input-group mt-3">
+                    <input type="file" asp-for="Image" class="form-control"/>
+                    <label asp-for="Image" class="input-group-text"></label>
+                </div>
+                <hr />
+               
+           
+
+

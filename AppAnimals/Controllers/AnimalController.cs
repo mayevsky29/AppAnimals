@@ -1,4 +1,5 @@
-﻿using AppAnimals.Domain;
+﻿using AppAnimals.ActionFilters;
+using AppAnimals.Domain;
 using AppAnimals.Domain.Entities.Catalog;
 using AppAnimals.Models;
 using AppAnimals.Resources;
@@ -7,6 +8,7 @@ using Bogus;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -17,15 +19,19 @@ using System.Threading.Tasks;
 
 namespace AppAnimals.Controllers
 {
+    [Internationalization]
     public class AnimalController : Controller
     {
+        private readonly IStringLocalizer<AnimalController> _localizer;
         private readonly AppEFContext _context;
         private readonly IMapper _mapper;
-        private IHostEnvironment _host;
+        private readonly IHostEnvironment _host;
 
         public AnimalController(AppEFContext context,
+            IStringLocalizer<AnimalController> localizer,
             IMapper mapper)
         {
+            _localizer = localizer;
             _context = context;
             _mapper = mapper;
 
@@ -54,16 +60,16 @@ namespace AppAnimals.Controllers
                 _context.SaveChanges();
             }
         }
-
+        
         public IActionResult Index(SearchHomeIndexModel search, int page = 1)
         {
             // Виводить в консолі, яку культуру підтримує ОП
             //Console.WriteLine(Thread.CurrentThread.CurrentCulture);
             //Console.WriteLine(Thread.CurrentThread.CurrentUICulture);
 
-            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en");
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en");
-            ViewBag.Email = Strings.Email;
+            //Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("uk");
+            //Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("uk");
+            ViewBag.Email = _localizer["Email"];
             int itemsCount = 5;
 
             var query = _context.Animals.AsQueryable();

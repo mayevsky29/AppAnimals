@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppAnimals.Domain.Migrations
 {
     [DbContext(typeof(AppEFContext))]
-    [Migration("20210828172109_Add tblAnimals")]
-    partial class AddtblAnimals
+    [Migration("20211116173940_Add tblUsers and tblAnimals")]
+    partial class AddtblUsersandtblAnimals
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -106,11 +106,17 @@ namespace AppAnimals.Domain.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("text");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)

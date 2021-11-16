@@ -34,7 +34,7 @@ namespace AppAnimals.Models
 
     public class UserNavbarInfoViewModel
     {
-        public string FullName { get; set; }
+        public string Name { get; set; }
         public string Image { get; set; }
     }
 }

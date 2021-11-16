@@ -23,7 +23,7 @@ namespace AppAnimals.ViewComponents
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             UserNavbarInfoViewModel model = new UserNavbarInfoViewModel
             {
-                FullName = "Василь Петрович",
+                Name = "Василь Петрович",
                 Image = "https://animalsglobe.ru/wp-content/uploads/2013/01/enot.jpg"
             };
             return View("_UserNavbarInfo", model);
